@@ -1,0 +1,20 @@
+{
+  "name": "number-converter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Fred Recco",
+  "description": "A conversor",
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.21.5"
+  }
+}
