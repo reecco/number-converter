@@ -1,39 +1,43 @@
 import { hexadecimal } from "./utils/index.js";
 
-function decimalToHex(value, array = []) {
-  const mod = value % 16;
-  value = parseInt(value / 16);
+function decimalToHex(value) {
+  const sequence = (value, array = []) => {
+    const mod = value % 16;
+    value = parseInt(value / 16);
 
-  hexadecimal.map(number => mod == number.dec && array.push(number.letter));
+    hexadecimal.map(number => mod == number.dec && array.push(number.letter));
 
-  if (mod <= 9)
-    array.push(mod);
+    if (mod <= 9)
+      array.push(mod);
 
-  if (value <= 0) {
-    let hex = "";
-    array.reverse().map(char => hex += char);
+    if (value <= 0) {
+      let hex = "";
+      array.reverse().map(char => hex += char);
 
-    return hex;
+      return hex;
+    }
+
+    return sequence(value, array);
   }
 
-  return decimalToHex(value, array);
+  return sequence(value);
 }
 
-function hexToDecimal(value, index = 0) {
-  const mapping = (value, pos = 0, array = []) => {
-    if (pos >= value.length)
+function hexToDecimal(value) {
+  const mapping = (value, index = 0, array = []) => {
+    if (index >= value.length)
       return array.reverse();
 
-    array.push(value.charAt(pos).toUpperCase());
+    array.push(value.charAt(index).toUpperCase());
 
-    return mapping(value, (pos += 1), array);
+    return mapping(value, (index += 1), array);
   };
 
   const replacedArray = (array, newArray = []) => {
     array.map(char =>
-      char <= 9 ? newArray.push(char) : 
-      hexadecimal.map(number => 
-        char == number.letter && newArray.push(number.dec)));
+      char <= 9 ? newArray.push(char) :
+        hexadecimal.map(number =>
+          char == number.letter && newArray.push(number.dec)));
 
     return newArray;
   }
@@ -43,6 +47,7 @@ function hexToDecimal(value, index = 0) {
   const array = replacedArray(hex);
 
   let result = 0;
+  let index = 0;
 
   array.filter(char => {
     result += char * (Math.pow(16, index));
@@ -52,7 +57,54 @@ function hexToDecimal(value, index = 0) {
   return result;
 }
 
+function decimalToBinary(value) {
+  const sequence = (value, array = []) => {
+    if (value <= 1) {
+      array.push(parseInt(value % 2));
+
+      return array.reverse();
+    }
+
+    array.push(parseInt(value % 2));
+    return sequence(value / 2, array);
+  }
+
+  const result = sequence(value);
+
+  let binary = "";
+
+  result.map(number => binary += number);
+
+  return parseInt(binary);
+}
+
+function binaryToDecimal(value) {
+  const mapping = (value, index = 0, array = []) => {
+    if (index >= value.length)
+      return array.reverse();
+
+    array.push(value.charAt(index));
+
+    return mapping(value, (index += 1), array);
+  }
+
+  const calc = (array, index = 1, result = 0, pos = 0) => {
+    if (pos >= array.length)
+      return result;
+      
+    result += (array[pos] * ((index *= 2) / 2));
+
+    return calc(array, index, result, pos += 1);
+  }
+
+  const array = mapping(value.toString());
+
+  return calc(array);
+}
+
 export default {
   decimalToHex,
-  hexToDecimal
+  hexToDecimal,
+  decimalToBinary,
+  binaryToDecimal
 }
