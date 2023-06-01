@@ -10,13 +10,11 @@
   },
   "keywords": [],
   "author": "Fred Recco",
-  "description": "A conversor",
+  "description": "Number converter",
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.21.5",
+    "@babel/preset-env": "^7.21.5",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22"
-  },
-  "dependencies": {
-    "@babel/preset-env": "^7.21.5"
   }
 }
